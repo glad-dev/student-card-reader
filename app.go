@@ -5,8 +5,6 @@ import (
 	"crypto/sha256"
 	"database/sql"
 	"encoding/hex"
-	"fmt"
-
 	"rucksack/database"
 	"rucksack/log"
 )
@@ -41,14 +39,14 @@ func (a *App) shutdown(ctx context.Context) {
 	log.Error("Failed to close db", "error", err)
 }
 
-// Greet returns a greeting for the given name
-func (a *App) Greet(name string) string {
-	return fmt.Sprintf("Hello %s, It's show time!", name)
-}
-
 func (a *App) AddStudent(id string) error {
 	tmp := sha256.Sum256([]byte(id))
 	id = hex.EncodeToString(tmp[:])
 
-	return database.InsertStudentID(a.db, id, a.debug)
+	err := database.InsertStudentID(a.db, id, a.debug)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

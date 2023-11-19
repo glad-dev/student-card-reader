@@ -1,12 +1,23 @@
 <script lang="ts">
   import logo from './assets/images/logo-universal.png'
-  import {Greet} from '../wailsjs/go/main/App.js'
+  import {AddStudent} from '../wailsjs/go/main/App.js'
 
-  let resultText: string = ""
-  let name: string
+  let errorText: string = ""
+  let allowed: boolean = false
+  let id: string
 
-  function greet(): void {
-    Greet(name).then(result => resultText = result)
+  function checkID(): void {
+    allowed = false
+    errorText = ""
+
+    AddStudent(id).then(
+            () => allowed = true
+    ).catch(
+            error => {
+              allowed = false
+              errorText = error
+            }
+    )
   }
 </script>
 
@@ -14,9 +25,13 @@
   <!--
   <img alt="Wails logo" id="logo" src="{logo}">
   -->
-  {#if resultText.length > 0}
-    <div class="result" id="result">{resultText}</div>
+  {#if errorText.length > 0}
+    <div class="result" id="result">{errorText}</div>
   {/if}
+  <div>
+    <h5>Test</h5>
+    <p>Allowed: {allowed}</p>
+  </div>
   <div class="input-box" id="input">
     <fieldset>
       <legend>Select a Uni:</legend>
@@ -36,9 +51,9 @@
     <div>
       <label for="id">Student card ID</label>
       <br>
-      <input autocomplete="off" bind:value={name} class="input" id="id" type="text"/>
+      <input autocomplete="off" bind:value={id} class="input" id="id" type="text"/>
       <br><br>
-      <button class="btn" on:click={greet}>Submit</button>
+      <button class="btn" on:click={checkID}>Submit</button>
     </div>
   </div>
 </main>
