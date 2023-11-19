@@ -11,8 +11,8 @@ import (
 )
 
 func InsertStudentID(db *sql.DB, id string, debug bool) error {
-	b, err := allowedToGiveOutBags(db, 300)
-	if b {
+	allowed, err := allowedToGiveOutBags(db, 300)
+	if !allowed {
 		log.Error("Already distributed allowed bag count")
 
 		return fmt.Errorf("not allowed to give out bags")
