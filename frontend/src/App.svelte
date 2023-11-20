@@ -1,74 +1,43 @@
 <script lang="ts">
 	import logo from './assets/images/IKOM.svg'
 	import {AddStudent} from '../wailsjs/go/main/App.js'
+	import Loading from "./Loading.svelte";
+	import Input from "./Input.svelte";
+	import Result from "./Result.svelte";
 
-	let allowed: boolean = false
-	let errorText: string
-	let id: string
-	let uni: string = "TUM"
+	let firstCall: boolean = true
+	let promise: Promise<void> = new Promise(resolve => setTimeout(resolve, 1));
 
-	function checkID(): void {
-		allowed = false
-		errorText = ""
+	function checkID(event): void {
+		firstCall = false
 
-		AddStudent(id, uni).then(
-				() => allowed = true
-		).catch(
-				error => {
-					allowed = false
-					errorText = error
-				}
-		)
+		const uni = event.detail.uni
+		const id = event.detail.id
+
+		promise = AddStudent(id, uni)
 	}
 </script>
 
 <main>
 	<div>
 		<img alt="Wails logo" id="logo" src="{logo}">
-		<h2>Rucksack Ausgabe</h2>
+		<h2>Ausgabe</h2>
 	</div>
 
-	{#if errorText != null && errorText.length > 0}
-		<div class="result" id="result">{errorText}</div>
-	{/if}
 	<div>
-		<p>Allowed: {allowed}</p>
-		<p>Uni: {uni}</p>
-	</div>
-	<div class="input-box" id="input">
-		<fieldset>
-			<legend>Select a Uni:</legend>
-			<div>
-				<input
-						bind:group={uni}
-						id="TUM"
-						name="uni"
-						type="radio"
-						value="TUM"/>
-				<label for="TUM">TUM/LMU</label>
-			</div>
+		{#await promise}
+			<Loading/>
+		{:then _}
+			{#if !firstCall}
+				<Result error="" />
+			{/if}
 
-			<div>
-				<input
-						id="other"
-						name="uni"
-						type="radio"
-						value="other"
-						bind:group={uni}
-				/>
-				<label for="other">Other</label>
-			</div>
+			<Input on:message={checkID}/>
+		{:catch err}
+			<Result error={err} />
 
-			<br>
-
-			<div>
-				<label for="id">Student card ID</label>
-				<br>
-				<input autocomplete="off" bind:value={id} class="input" id="id" type="text"/>
-				<br><br>
-				<button class="btn" on:click={checkID}>Submit</button>
-			</div>
-		</fieldset>
+			<Input on:message={checkID}/>
+		{/await}
 	</div>
 </main>
 
@@ -89,42 +58,5 @@
 		height: 20px;
 		line-height: 20px;
 		margin: 1.5rem auto;
-	}
-
-	.input-box .btn {
-		width: 60px;
-		height: 30px;
-		line-height: 30px;
-		border-radius: 3px;
-		border: none;
-		margin: 0 0 0 20px;
-		padding: 0 8px;
-		cursor: pointer;
-	}
-
-	.input-box .btn:hover {
-		background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);
-		color: #333333;
-	}
-
-	.input-box .input {
-		border: none;
-		border-radius: 3px;
-		outline: none;
-		height: 30px;
-		line-height: 30px;
-		padding: 0 10px;
-		background-color: rgba(240, 240, 240, 1);
-		-webkit-font-smoothing: antialiased;
-	}
-
-	.input-box .input:hover {
-		border: none;
-		background-color: rgba(255, 255, 255, 1);
-	}
-
-	.input-box .input:focus {
-		border: none;
-		background-color: rgba(255, 255, 255, 1);
 	}
 </style>

@@ -10,16 +10,16 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-func allowedToGiveOutBags(db *sql.DB, maxBags int) (bool, error) {
-	count, err := getDistributedBagCount(db)
+func allowedToGiveOutItem(db *sql.DB, maxItems int) (bool, error) {
+	count, err := getDistributedItemCount(db)
 	if err != nil {
 		return false, err
 	}
 
-	return count < maxBags, nil
+	return count < maxItems, nil
 }
 
-func getDistributedBagCount(db *sql.DB) (int, error) {
+func getDistributedItemCount(db *sql.DB) (int, error) {
 	var count int
 	t := time.Now()
 	err := db.QueryRow(fmt.Sprintf(`
@@ -40,9 +40,9 @@ func getDistributedBagCount(db *sql.DB) (int, error) {
     	END;
 	`, t.Format("15:04"))).Scan(&count)
 	if err != nil {
-		log.Error("Failed to query database for rucksack count", "error", err)
+		log.Error("Failed to query database for item count", "error", err)
 
-		return -1, fmt.Errorf("could not count bags: %w", err)
+		return -1, fmt.Errorf("could not count items: %w", err)
 	}
 
 	return count, nil

@@ -11,13 +11,13 @@ import (
 )
 
 func InsertStudentID(db *sql.DB, id string, debug bool) error {
-	allowed, err := allowedToGiveOutBags(db, 300)
+	allowed, err := allowedToGiveOutItem(db, 300)
 	if !allowed {
-		log.Error("Already distributed allowed bag count")
+		log.Error("Already distributed allowed item count")
 
-		return fmt.Errorf("not allowed to give out bags")
+		return fmt.Errorf("not allowed to give out any more items")
 	} else if err != nil {
-		log.Error("Failed to check if allowed to give out bags", "error", err)
+		log.Error("Failed to check if allowed to give out items", "error", err)
 
 		return fmt.Errorf("could not check count: %w", err)
 	}
@@ -30,7 +30,7 @@ func InsertStudentID(db *sql.DB, id string, debug bool) error {
 	} else if len(ts) > 0 {
 		log.Error("Existing entry", "id", id, "time-stamp", ts)
 
-		return fmt.Errorf("student already got a bag on %s", ts)
+		return fmt.Errorf("student already got an item on %s", ts)
 	}
 
 	tx, err := db.Begin()

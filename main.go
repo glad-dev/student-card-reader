@@ -40,7 +40,7 @@ func main() {
 
 	// Create application with options
 	err = wails.Run(&options.App{
-		Title:  "wails-test",
+		Title:  "IKOM Item Distribution",
 		Width:  1024,
 		Height: 768,
 		AssetServer: &assetserver.Options{

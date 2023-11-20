@@ -26,7 +26,8 @@ func NewApp() (*App, error) {
 	}
 
 	return &App{
-		db: db,
+		db:    db,
+		debug: true,
 	}, nil
 }
 
@@ -44,6 +45,10 @@ func (a *App) shutdown(ctx context.Context) {
 func (a *App) AddStudent(id string, uni string) error {
 	id = strings.TrimSuffix(id, "$")
 
+	if len(id) == 0 {
+		return errors.New("ID cannot be empty")
+	}
+
 	if !a.debug && uni == "TUM" && len(id) != 16 {
 		return errors.New("invalid TUM/LMU ID. Try again")
 	}
@@ -53,6 +58,7 @@ func (a *App) AddStudent(id string, uni string) error {
 
 	err := database.InsertStudentID(a.db, id, a.debug)
 	if err != nil {
+		log.Error("Not able to insert student", "error", err)
 		return err
 	}
 
