@@ -38,8 +38,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	log.Error("This is a message", "key1", "value1", "key2", "value2", "key3", "value3")
-
 	// Create application with options
 	err = wails.Run(&options.App{
 		Title:  "wails-test",
