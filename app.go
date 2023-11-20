@@ -5,8 +5,10 @@ import (
 	"crypto/sha256"
 	"database/sql"
 	"encoding/hex"
+	"errors"
 	"rucksack/database"
 	"rucksack/log"
+	"strings"
 )
 
 // App struct
@@ -39,7 +41,13 @@ func (a *App) shutdown(ctx context.Context) {
 	log.Error("Failed to close db", "error", err)
 }
 
-func (a *App) AddStudent(id string) error {
+func (a *App) AddStudent(id string, uni string) error {
+	id = strings.TrimSuffix(id, "$")
+
+	if !a.debug && uni == "TUM" && len(id) != 16 {
+		return errors.New("invalid TUM/LMU ID. Try again")
+	}
+
 	tmp := sha256.Sum256([]byte(id))
 	id = hex.EncodeToString(tmp[:])
 

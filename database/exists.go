@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"time"
 
 	"rucksack/log"
 
@@ -21,6 +22,15 @@ func existingEntry(db *sql.DB, id string, debug bool) (string, error) {
 		log.Error("Failed to query database for existing record: %s", err)
 
 		return "", fmt.Errorf("could not query db: %w", err)
+	}
+
+	if len(timestamp) > 0 {
+		ts, err := time.Parse("2006-01-02T15:04:05Z", timestamp)
+		if err != nil {
+			log.Error("Failed to parse timestamp", "timestamp", timestamp, "error", err)
+		} else {
+			timestamp = ts.Format("02.01.2006 15:04")
+		}
 	}
 
 	return timestamp, nil

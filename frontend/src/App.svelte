@@ -11,7 +11,7 @@
 		allowed = false
 		errorText = ""
 
-		AddStudent(id).then(
+		AddStudent(id, uni).then(
 				() => allowed = true
 		).catch(
 				error => {
@@ -27,8 +27,6 @@
 		<img alt="Wails logo" id="logo" src="{logo}">
 		<h2>Rucksack Ausgabe</h2>
 	</div>
-
-
 
 	{#if errorText != null && errorText.length > 0}
 		<div class="result" id="result">{errorText}</div>
@@ -60,17 +58,17 @@
 				/>
 				<label for="other">Other</label>
 			</div>
-		</fieldset>
 
-		<br>
-
-		<div>
-			<label for="id">Student card ID</label>
 			<br>
-			<input autocomplete="off" bind:value={id} class="input" id="id" type="text"/>
-			<br><br>
-			<button class="btn" on:click={checkID}>Submit</button>
-		</div>
+
+			<div>
+				<label for="id">Student card ID</label>
+				<br>
+				<input autocomplete="off" bind:value={id} class="input" id="id" type="text"/>
+				<br><br>
+				<button class="btn" on:click={checkID}>Submit</button>
+			</div>
+		</fieldset>
 	</div>
 </main>
 
@@ -129,5 +127,4 @@
 		border: none;
 		background-color: rgba(255, 255, 255, 1);
 	}
-
 </style>
