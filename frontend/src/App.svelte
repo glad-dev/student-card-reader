@@ -24,7 +24,10 @@
 		<h2>Ausgabe</h2>
 	</div>
 
-	<div>
+	<br>
+
+	<div class="wrapper">
+	<div class="flex-container">
 		{#await promise}
 			<Loading/>
 		{:then _}
@@ -38,6 +41,7 @@
 
 			<Input on:message={checkID}/>
 		{/await}
+	</div>
 	</div>
 </main>
 
@@ -54,9 +58,15 @@
 		background-origin: content-box;
 	}
 
-	.result {
-		height: 20px;
-		line-height: 20px;
-		margin: 1.5rem auto;
+	.wrapper {
+		margin: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.flex-container {
+		width: 75%;
+		min-width: 300px;
 	}
 </style>
