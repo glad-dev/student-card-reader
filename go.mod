@@ -34,5 +34,3 @@ require (
 	golang.org/x/sys v0.8.0 // indirect
 	golang.org/x/text v0.9.0 // indirect
 )
-
-// replace github.com/wailsapp/wails/v2 v2.6.0 => C:\Users\User\go\pkg\mod
