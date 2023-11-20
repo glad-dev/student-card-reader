@@ -1,11 +1,13 @@
 package log
 
 import (
+	"fmt"
 	"log"
 	"log/slog"
 	"os"
 	"path"
 	"rucksack/dir"
+	"runtime"
 )
 
 var logger *slog.Logger
@@ -17,12 +19,18 @@ func Init() {
 	}
 
 	logger = slog.New(slog.NewTextHandler(file, &slog.HandlerOptions{
-		AddSource:   true,
+		AddSource:   false,
 		Level:       slog.LevelInfo,
 		ReplaceAttr: nil,
 	}))
 }
 
 func Error(msg string, args ...any) {
+	_, file, lineNumber, ok := runtime.Caller(1)
+	if ok {
+		tmp := []any{"source", fmt.Sprintf("%s:%d", file, lineNumber)}
+		args = append(tmp, args...)
+	}
+
 	logger.Error(msg, args...)
 }
