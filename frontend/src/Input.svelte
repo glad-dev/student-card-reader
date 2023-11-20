@@ -20,7 +20,6 @@
 
 <div class="input-box" id="input">
 	<fieldset>
-		<legend>Select a Uni:</legend>
 		<div>
 			<input
 					bind:group={uni}
@@ -47,7 +46,7 @@
 		<div>
 			<label for="id">Student card ID</label>
 			<br>
-			<input autocomplete="off" bind:value={id} class="input" id="id" type="text"/>
+			<input autocomplete="off" autofocus bind:value={id} class="input" id="id" type="text"/>
 			<br><br>
 			<button class="btn" on:click={submit}>Submit</button>
 		</div>
