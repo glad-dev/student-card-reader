@@ -1,4 +1,5 @@
 <script lang="ts">
+	import logo from './assets/images/IKOM.svg'
 	import {AddStudent} from '../wailsjs/go/main/App.js'
 
 	let allowed: boolean = false
@@ -22,9 +23,13 @@
 </script>
 
 <main>
-	<!--
-	<img alt="Wails logo" id="logo" src="{logo}">
-	-->
+	<div>
+		<img alt="Wails logo" id="logo" src="{logo}">
+		<h2>Rucksack Ausgabe</h2>
+	</div>
+
+
+
 	{#if errorText != null && errorText.length > 0}
 		<div class="result" id="result">{errorText}</div>
 	{/if}
