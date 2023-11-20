@@ -27,21 +27,21 @@
 	<br>
 
 	<div class="wrapper">
-	<div class="flex-container">
-		{#await promise}
-			<Loading/>
-		{:then _}
-			{#if !firstCall}
-				<Result error="" />
-			{/if}
+		<div class="flex-container">
+			{#await promise}
+				<Loading/>
+			{:then _}
+				{#if !firstCall}
+					<Result error=""/>
+				{/if}
 
-			<Input on:message={checkID}/>
-		{:catch err}
-			<Result error={err} />
+				<Input on:message={checkID}/>
+			{:catch err}
+				<Result error={err}/>
 
-			<Input on:message={checkID}/>
-		{/await}
-	</div>
+				<Input on:message={checkID}/>
+			{/await}
+		</div>
 	</div>
 </main>
 
