@@ -6,6 +6,13 @@
 	let uni: string = "TUM"
 	let id: string = ""
 
+	function onChange(event) {
+		let id = event.target.value;
+		if (id.endsWith("$")) {
+			document.getElementById("submit-button").click();
+		}
+	}
+
 	function submit() {
 		dispatch('message', {
 			uni: uni,
@@ -46,14 +53,18 @@
 		<div>
 			<label for="id">Student card ID</label>
 			<br>
-			<input autocomplete="off" autofocus bind:value={id} class="input" id="id" type="text"/>
+			<input autocomplete="off" autofocus on:input={onChange} bind:value={id} class="input" id="id" type="text"/>
 			<br><br>
-			<button class="btn" on:click={submit}>Submit</button>
+			<button class="btn" id="submit-button" on:click={submit}>Submit</button>
 		</div>
 	</fieldset>
 </div>
 
 <style>
+	input[type="radio"] {
+        margin-right: 10px;
+    }
+
 	input[type='radio']:after {
 		width: 15px;
 		height: 15px;
